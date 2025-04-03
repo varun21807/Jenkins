@@ -21,8 +21,8 @@ pipeline {
         stage('Push Image to DockerHub') {
             steps {
                 script {
-                    bat "docker login"
-                    bat 'docker push varun2615/docker_example'
+  bat "echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin"
+                      bat 'docker push varun2615/docker_example'
                 }
             }
         }
