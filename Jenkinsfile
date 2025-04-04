@@ -24,19 +24,19 @@ pipeline {
             }
         }
 
-        stage('Login and Push to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'Docker-hub',  // Make sure this matches your Jenkins credential ID
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    bat """
-                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                        docker push varun2615/docker_example:latest
-                    """
-                }
-            }
+       stage('Login and Push to DockerHub') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'Docker-hub',
+            usernameVariable: 'Docker_user',
+            passwordVariable: 'Docker_password'
+        )]) {
+            bat """
+                echo %Docker_password% | docker login -u %Docker_user% --password-stdin
+            """
         }
+    }
+}
+
     }
 }
