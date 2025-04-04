@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'Docker_user', passwordVariable: 'Docker_password')]) {
-                         bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+                        bat 'docker login -u %Docker_user% -p %Docker_password%'
                         bat 'docker push varun2615/docker_example'
                     }
                 }
