@@ -8,13 +8,13 @@ pipeline {
         stage('Build Maven') {
             steps {
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/varun21807/Jenkins.git']])
-                bat 'mvn clean install'
+                sh 'mvn clean install'
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat 'docker build -t varun2615/docker_example .'
+                    sh 'docker build -t varun2615/docker_example:latest .'
                 }
             }
         }
@@ -22,10 +22,15 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'Docker_user', passwordVariable: 'Docker_password')]) {
-                        bat 'docker login -u %Docker_user% -p %Docker_password%'
-                        bat 'docker push varun2615/docker_example'
+                        sh 'echo $Docker_password | docker login -u $Docker_user --password-stdin'
+                        sh 'docker push varun2615/docker_example:latest'
                     }
                 }
+            }
+        }
+        stage('Clean Up Dangling Images') {
+            steps {
+                sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
             }
         }
     }
