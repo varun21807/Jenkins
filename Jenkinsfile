@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-       stage('Login and Push to DockerHub') {
+stage('Login and Push to DockerHub') {
     steps {
         withCredentials([usernamePassword(
             credentialsId: 'Docker-hub',
@@ -33,10 +33,12 @@ pipeline {
         )]) {
             bat """
                 echo %Docker_password% | docker login -u %Docker_user% --password-stdin
+                docker push varun2615/docker_example:latest
             """
         }
     }
 }
+
 
     }
 }
