@@ -31,10 +31,8 @@ pipeline {
                     usernameVariable: 'Docker_user',
                     passwordVariable: 'Docker_password'
                 )]) {
-                    bat '''
-                        echo %Docker_password% | docker login -u %Docker_user% --password-stdin
-                        docker push varun2615/docker_example:latest
-                    '''
+                    bat 'docker login -u %Docker_user% -p %Docker_password%'
+                    bat 'docker push varun2615/docker_example:latest'
                 }
             }
         }
